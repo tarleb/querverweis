@@ -1,0 +1,14 @@
+#!/usr/bin/env pandoc-lua
+-- Copyright: © 2024 Albert Krewinkel.
+-- License: MIT
+
+local perevir = require 'perevir'
+
+--- Command line arguments
+local arg = arg
+
+local opts = perevir.parse_args(arg)
+local pereviryalnyk = perevir.Pereviryalnyk.new{
+  accept = opts.accept,
+}
+pereviryalnyk:test_files_in_dir(opts.path)
