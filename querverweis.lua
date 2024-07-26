@@ -19,15 +19,26 @@ end
 
 local function set_link_contents (reftargets)
   local refnums = {}
-  local function setrefnums (id, i) rawset(refnums, '#'..id, pandoc.Str(i)) end
-  reftargets.tables:map(setrefnums)
-  reftargets.figures:map(setrefnums)
+  local function setrefnums (reftype)
+    return function (id, i)
+      local refnum = {
+        ['content'] = pandoc.Str(i),
+        ['ref-type'] = reftype,
+      }
+      rawset(refnums, '#'..id, refnum)
+    end
+  end
+  reftargets.tables:map(setrefnums('table'))
+  reftargets.figures:map(setrefnums('figure'))
   return {
     Link = function (link)
-      print(link.target)
       if not next (link.content) then
-        link.content = refnums[link.target] or link.content
-        return link
+        local refobj = refnums[link.target]
+        if refobj then
+          link.attributes['ref-type'] = refobj['ref-type']
+          link.content = refobj.content
+          return link
+        end
       end
     end
   }
