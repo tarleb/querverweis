@@ -24,6 +24,10 @@ identifiers are easily visible there.
 </table>
 ```
 
+``` sh {#command}
+pandoc -f html -t jats --lua-filter=querverweis.lua
+```
+
 ``` jats {#output}
 <table-wrap>
   <table id="one">
