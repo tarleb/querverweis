@@ -1,6 +1,8 @@
 local pandoc = require 'pandoc'
 local List   = require 'pandoc.List'
 
+local equation_class = 'equation'
+
 local function fill_reftargets (reftargets)
   return  {
     traverse = 'topdown',
@@ -10,8 +12,17 @@ local function fill_reftargets (reftargets)
       end
     end,
     Span = function (span)
-      if span.identifier and span.classes:includes 'equation' then
+      if span.identifier and span.classes:includes(equation_class) then
         reftargets.equations:insert(span.identifier)
+        return span, false
+      end
+    end,
+    Math = function (mth)
+      local formula, label = mth.text:match '^(.+)\\label%{(.+)%}%s*$'
+      if formula and label then
+        reftargets.equations:insert(label)
+        mth.text = formula:gsub('%s*', '') -- trim end
+        return pandoc.Span(mth, {label, {equation_class}}), false
       end
     end,
     Table = function (tbl)
@@ -58,7 +69,7 @@ return {{
         figures = List{},
         tables  = List{},
       }
-      doc:walk(fill_reftargets(reftargets))
+      doc = doc:walk(fill_reftargets(reftargets))
       return doc:walk(set_link_contents(reftargets))
     end
 }}
