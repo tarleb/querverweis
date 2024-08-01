@@ -9,16 +9,22 @@ local function fill_reftargets (reftargets)
         reftargets.figures:insert(fig.identifier)
       end
     end,
+    Span = function (span)
+      if span.identifier and span.classes:includes 'equation' then
+        reftargets.equations:insert(span.identifier)
+      end
+    end,
     Table = function (tbl)
       if tbl.identifier ~= '' then
         reftargets.tables:insert(tbl.identifier)
       end
-    end
+    end,
   }
 end
 
 local function set_link_contents (reftargets)
   local refnums = {}
+  -- See the JATS docs for suitable `reftype` values
   local function setrefnums (reftype)
     return function (id, i)
       local refnum = {
@@ -28,8 +34,9 @@ local function set_link_contents (reftargets)
       rawset(refnums, '#'..id, refnum)
     end
   end
-  reftargets.tables:map(setrefnums('table'))
+  reftargets.equations:map(setrefnums('eq'))
   reftargets.figures:map(setrefnums('figure'))
+  reftargets.tables:map(setrefnums('table'))
   return {
     Link = function (link)
       if not next (link.content) then
@@ -47,6 +54,7 @@ end
 return {{
     Pandoc = function (doc)
       local reftargets = {
+        equations = List{},
         figures = List{},
         tables  = List{},
       }
