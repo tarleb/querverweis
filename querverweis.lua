@@ -45,7 +45,7 @@ local function set_link_contents (reftargets)
       rawset(refnums, '#'..id, refnum)
     end
   end
-  reftargets.equations:map(setrefnums('eq'))
+  reftargets.equations:map(setrefnums('disp-formula'))
   reftargets.figures:map(setrefnums('figure'))
   reftargets.tables:map(setrefnums('table'))
   return {
