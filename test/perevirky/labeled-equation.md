@@ -6,7 +6,7 @@ perevir:
 
 # Labeled Equation
 
-A equation that's labeled using LaTeX syntax should be converted
+An equation that's labeled using LaTeX syntax should be converted
 to the internal labeling structure, i.e., the label should become
 the id of a wrapping Span.
 
