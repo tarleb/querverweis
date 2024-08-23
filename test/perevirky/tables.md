@@ -1,9 +1,3 @@
----
-perevir:
-  filters:
-  - querverweis.lua
----
-
 # Tables
 
 Check to see if tables are numbered.

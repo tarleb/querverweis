@@ -1,9 +1,3 @@
----
-perevir:
-  filters:
-  - querverweis.lua
----
-
 # Equations
 
 "Display math" equations should get numbered.

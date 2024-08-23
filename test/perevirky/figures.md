@@ -1,9 +1,3 @@
----
-perevir:
-  filters:
-  - querverweis.lua
----
-
 # Figures
 
 Check to see if links to figures get numbered.

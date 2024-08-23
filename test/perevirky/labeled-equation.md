@@ -1,9 +1,3 @@
----
-perevir:
-  filters:
-  - querverweis.lua
----
-
 # Labeled Equation
 
 An equation that's labeled using LaTeX syntax should be converted
