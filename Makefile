@@ -1,4 +1,4 @@
 .PHONY: test
 
 test:
-	test/perevir test/perevirky
+	perevir test/perevirky
