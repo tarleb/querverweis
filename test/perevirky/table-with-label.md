@@ -8,23 +8,25 @@ perevir:
 Setting the `querverweis.labels` property to `true` ensures that a label is
 added to the caption.
 
-``` markdown {#input format="commonmark_x"}
+``` markdown {#input}
 ---
 querverweis:
   labels: true
 ---
 
-{#languages}
 | Language  | Family   |
 |-----------|----------|
 | German    | Germanic |
 | French    | Romance  |
 | Ukrainian | Slavic   |
+
+: Some Indo-European languages. []{#languages}
 ```
 
 ``` html {#output}
 <table id="languages">
-<caption><span class="caption-label">Table 1 </span></caption>
+<caption><span class="caption-label">Table 1 </span>Some Indo-European
+languages.</caption>
 <thead>
 <tr>
 <th>Language</th>

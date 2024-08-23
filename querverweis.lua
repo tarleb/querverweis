@@ -1,14 +1,63 @@
 local pandoc = require 'pandoc'
 local List   = require 'pandoc.List'
+local utils  = require 'pandoc.utils'
 
 local equation_class = 'equation'
 
+--- Get the ID of the last span in this block and unwrap the span
+local function id_from_block (blk)
+  if blk.t == 'Plain' or blk.t == 'Para' then
+    local last_inline = blk.content:remove()
+    if last_inline.t == 'Span' and last_inline.identifier ~= '' then
+      local id = last_inline.identifier
+      blk.content:extend(last_inline.content)  -- unwrap the span
+      -- drop trailing whitespace
+      local elemtype
+      for i = #blk.content, 1, -1 do
+        elemtype = blk.content[i].t
+        if elemtype == 'Space' or elemtype == 'SoftBreak' then
+          blk.content[i] = nil
+        else
+          break
+        end
+      end
+      return id, blk
+    else
+      blk.content:insert(last_inline)
+      return nil, blk
+    end
+  end
+end
+
+--- Extract the ID from the caption
+local function set_id_from_caption (elem)
+  local capt = elem.caption.long
+  local last_block = capt[#capt]
+  if last_block then
+    local id
+    id, last_block = id_from_block(last_block)
+    if id then
+      elem.identifier = id
+      capt[#capt] = last_block
+      elem.caption.long = capt
+      return id, elem
+    end
+  end
+  return nil, elem
+end
+
 --- Creates a filter that fills the given `reftargets` data structure.
-local function fill_reftargets (reftargets)
+local function fill_reftargets (reftargets, opts)
   return  {
     traverse = 'topdown',
     Figure = function (fig)
-      if fig.identifier ~= '' then
+      -- If the element has no ID, try to get one from the caption.
+      if fig.identifier == '' then
+        local id
+        id, fig = set_id_from_caption(fig)
+        reftargets.figures:insert(id)
+        return fig
+      else
         reftargets.figures:insert(fig.identifier)
       end
     end,
@@ -27,7 +76,13 @@ local function fill_reftargets (reftargets)
       end
     end,
     Table = function (tbl)
-      if tbl.identifier ~= '' then
+      -- If the element has no ID, try to get one from the caption.
+      if tbl.identifier == '' then
+        local id
+        id, tbl = set_id_from_caption(tbl)
+        reftargets.tables:insert(id)
+        return tbl
+      else
         reftargets.tables:insert(tbl.identifier)
       end
     end,
@@ -117,9 +172,10 @@ local default_captions = {
 
 --- Set of default options.
 local default_options = {
-  labels = false,
-  separator = pandoc.Inlines{Space},
-  caption = default_captions,
+  ['caption']         = default_captions,
+  ['id-from-caption'] = true,
+  ['labels']          = false,
+  ['separator']       = pandoc.Inlines{Space},
 }
 
 --- Create querverweis options
