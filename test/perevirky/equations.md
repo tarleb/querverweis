@@ -26,7 +26,7 @@ positive integers if $n ≥ 3$.
 
 <div id="output">
 
-Formula [1](#squares){ref-type="eq"} has an infinite number of solutions for
+Formula [1](#squares){ref-type="disp-formula"} has an infinite number of solutions for
 $a, b, c ∈ ℕ$
 [
 $$
@@ -39,7 +39,7 @@ This formula can be generalized to
 a^n + b^n = c^n
 $$]{#fermat .equation}
 
-It has been proven that equation [2](#fermat){ref-type="eq"} has no solutions in the
+It has been proven that equation [2](#fermat){ref-type="disp-formula"} has no solutions in the
 positive integers if $n ≥ 3$.
 
 </div>
