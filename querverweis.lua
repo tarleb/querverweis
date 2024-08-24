@@ -2,6 +2,9 @@ local pandoc = require 'pandoc'
 local List   = require 'pandoc.List'
 local utils  = require 'pandoc.utils'
 
+local ptype, stringify = utils.type, utils.stringify
+local FORMAT = FORMAT
+
 local equation_class = 'equation'
 
 --- Get the ID of the last span in this block and unwrap the span
@@ -48,18 +51,24 @@ end
 
 --- Creates a filter that fills the given `reftargets` data structure.
 local function fill_reftargets (reftargets, opts)
+  local function add_to_reftargets(elem, key)
+    -- If the element has no ID, try to get one from the caption.
+    if elem.identifier == '' then
+      local id
+      id, elem = set_id_from_caption(elem)
+      -- use `true` instead of an ID as a placeholder, so numbering
+      -- will still work.
+      reftargets[key]:insert(id or true)
+      return elem
+    else
+      reftargets[key]:insert(elem.identifier)
+    end
+  end
+
   return  {
     traverse = 'topdown',
     Figure = function (fig)
-      -- If the element has no ID, try to get one from the caption.
-      if fig.identifier == '' then
-        local id
-        id, fig = set_id_from_caption(fig)
-        reftargets.figures:insert(id)
-        return fig
-      else
-        reftargets.figures:insert(fig.identifier)
-      end
+      return add_to_reftargets(fig, 'figures')
     end,
     Span = function (span)
       if span.identifier and span.classes:includes(equation_class) then
@@ -76,15 +85,7 @@ local function fill_reftargets (reftargets, opts)
       end
     end,
     Table = function (tbl)
-      -- If the element has no ID, try to get one from the caption.
-      if tbl.identifier == '' then
-        local id
-        id, tbl = set_id_from_caption(tbl)
-        reftargets.tables:insert(id)
-        return tbl
-      else
-        reftargets.tables:insert(tbl.identifier)
-      end
+      return add_to_reftargets(tbl, 'tables')
     end,
   }
 end
@@ -188,6 +189,13 @@ local function make_opts (useropts)
         (useropts.separator == 'colon' and pandoc.Inlines{':', Space}) or
         (useropts.separator == 'period' and pandoc.Inlines{'.', Space}) or
         value
+    elseif key == 'labels' then
+      local labelsconf = useropts[key]
+      if ptype(labelsconf) == 'List' then
+        opts[key] = labelsconf:map(stringify):includes(FORMAT)
+      else
+        opts[key] = not not labelsconf  -- ensure boolean
+      end
     else
       opts[key] = useropts[key] or value
     end
