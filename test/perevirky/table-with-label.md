@@ -1,9 +1,9 @@
 ---
 perevir:
-  compare: strings
+  ignore-softbreaks: true
 ---
 
-# Table with Label
+# `labels`: add labels to caption
 
 Setting the `querverweis.labels` property to `true` ensures that a label is
 added to the caption.
@@ -23,29 +23,21 @@ querverweis:
 : Some Indo-European languages. []{#languages}
 ```
 
+Note the span with content "Table 1" and class `caption-label`.
+
 ``` html {#output}
 <table id="languages">
-<caption><span class="caption-label">Table 1 </span>Some Indo-European
-languages.</caption>
-<thead>
-<tr>
-<th>Language</th>
-<th>Family</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>German</td>
-<td>Germanic</td>
-</tr>
-<tr>
-<td>French</td>
-<td>Romance</td>
-</tr>
-<tr>
-<td>Ukrainian</td>
-<td>Slavic</td>
-</tr>
-</tbody>
+  <caption>
+    <span class="caption-label">Table 1 </span>Some
+    Indo-European languages.
+  </caption>
+  <thead>
+    <tr><th>Language</th><th>Family</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>German</td><td>Germanic</td></tr>
+    <tr><td>French</td><td>Romance</td></tr>
+    <tr><td>Ukrainian</td><td>Slavic</td></tr>
+  </tbody>
 </table>
 ```
