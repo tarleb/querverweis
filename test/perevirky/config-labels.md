@@ -3,7 +3,7 @@ perevir:
   ignore-softbreaks: true
 ---
 
-# `labels`: add labels to caption
+## `labels`: add labels to caption
 
 Setting the `querverweis.labels` property to `true` ensures that a label is
 added to the caption.

@@ -1,0 +1,17 @@
+input-files:
+  # The first file is not parsed as markdown
+  - README.md
+  - test/perevirky/basics-intro.md
+  - test/perevirky/basics-figure.md
+  - test/perevirky/basics-table.md
+  - test/perevirky/basics-table-id.md
+  - test/perevirky/config-intro.md
+  - test/perevirky/config-labels.md
+  - test/perevirky/config-labels-format-list.md
+
+from: tools/place-block.lua
+to: gfm
+
+markdown-headings: setext
+
+shift-heading-level-by: 1

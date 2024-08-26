@@ -3,7 +3,7 @@ perevir:
   compare: 'strings'
 ---
 
-# Adding labels only in some formats
+### Adding labels only in some formats
 
 Whether labels should be added to the caption generally depends on the
 output format. E.g., TeX engines have their own caption system and add
