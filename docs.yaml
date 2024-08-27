@@ -8,6 +8,8 @@ input-files:
   - test/perevirky/config-intro.md
   - test/perevirky/config-labels.md
   - test/perevirky/config-labels-format-list.md
+  - test/perevirky/config-ref-types.md
+  - test/perevirky/config-ref-types-tables.md
 
 from: tools/place-block.lua
 to: gfm

@@ -153,7 +153,9 @@ local function set_labels (refnums, opts)
       if not next (link.content) then
         local refobj = refnums[link.target]
         if refobj then
-          link.attributes['ref-type'] = refobj['ref-type']
+          link.attributes['ref-type'] = opts['ref-types']
+            and refobj['ref-type']
+            or nil
           link.content = refobj.content
           return link
         end
@@ -177,6 +179,7 @@ local default_options = {
   ['caption']         = default_captions,
   ['id-from-caption'] = true,
   ['labels']          = false,
+  ['ref-types']       = true,
   ['separator']       = pandoc.Inlines{Space},
 }
 

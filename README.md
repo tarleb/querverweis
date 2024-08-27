@@ -198,3 +198,112 @@ French & Romance \\
 Ukrainian & Slavic \\
 \end{longtable}
 ```
+
+### `ref-types`: mark links with type of cross-linked element
+
+The `ref-types` option allows to enable and disable the addition of
+`ref-type` attributes to links. The option is most useful when
+converting to JATS, where this [attribute is
+standardized](https://jats.nlm.nih.gov/articleauthoring/tag-library/1.2/attribute/ref-type.html).
+
+#### Figures
+
+<details>
+
+The example below is using JATS as output, because element identifiers
+are easily visible there.
+
+``` markdown
+---
+querverweis:
+  ref-types: true
+---
+
+![A beautiful sunset.](sunset.jpg){#sunset}
+
+See figure [](#sunset) for a sunset.
+```
+
+Besides updating the link labels, the filter now also adds the
+`ref-type` attribute to the link, augmenting the reference with semantic
+information.
+
+``` xml
+<fig id="sunset">
+  <caption><p>A beautiful sunset.</p></caption>
+  <graphic mimetype="image" mime-subtype="jpeg" xlink:href="sunset.jpg" />
+</fig>
+<p>See figure <xref alt="1" rid="sunset" ref-type="figure">1</xref> for
+a sunset.</p>
+```
+
+</details>
+
+#### Tables
+
+<details>
+
+The example below is using JATS as output, because element identifiers
+are easily visible there.
+
+``` markdown
+---
+querverweis:
+  ref-types: true
+---
+
+---- ----
+eins zwei
+drei vier
+---- ----
+
+: []{#one}
+
+See table [](#one) for four German numbers,
+and table [](#two) for some more.
+
+ -------- --------
+ dreizehn vierzehn
+      elf    zwölf
+ -------- --------
+
+ : []{#two}
+```
+
+The `ref-type` is set to `table` when referencing a table.
+
+``` xml
+<table-wrap>
+  <table id="one">
+    <tbody>
+      <tr>
+        <td>eins</td>
+        <td>zwei</td>
+      </tr>
+      <tr>
+        <td>drei</td>
+        <td>vier</td>
+      </tr>
+    </tbody>
+  </table>
+</table-wrap>
+<p>See table <xref alt="1" rid="one" ref-type="table">1</xref> for four
+German numbers, and table
+<xref alt="2" rid="two" ref-type="table">2</xref> for some more.</p>
+<table-wrap>
+  <table id="two">
+    <tbody>
+      <tr>
+        <td>dreizehn</td>
+        <td>vierzehn</td>
+      </tr>
+      <tr>
+        <td>elf</td>
+        <td>zwölf</td>
+      </tr>
+    </tbody>
+  </table>
+</table-wrap>
+```
+
+</details>
