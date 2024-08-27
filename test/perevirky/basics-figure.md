@@ -1,9 +1,7 @@
 
 ## Figures
 
-*Querverweis* updates the link label with the figure numbers. The filter
-also adds a `ref-type` attribute to the link, augmenting the reference
-with semantic information.
+*Querverweis* updates the link label with the figure numbers.
 
 ``` html {#input}
 <figure id="sunset">
@@ -20,5 +18,5 @@ After passing through the filter this input becomes equivalent to
   <img src="sunset.jpg" />
   <figcaption>A beautiful sunset.</figcaption>
 </figure>
-<p>See figure <a href="#sunset" data-ref-type="figure">1</a> for a sunset.</p>
+<p>See figure <a href="#sunset">1</a> for a sunset.</p>
 ```

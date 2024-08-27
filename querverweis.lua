@@ -179,7 +179,7 @@ local default_options = {
   ['caption']         = default_captions,
   ['id-from-caption'] = true,
   ['labels']          = false,
-  ['ref-types']       = true,
+  ['ref-types']       = false,
   ['separator']       = pandoc.Inlines{Space},
 }
 

@@ -19,5 +19,5 @@ above was written as
   <tr><td>placeholder</td></tr>
 </table>
 
-<p>See table <a href="#one" data-ref-type="table">1</a> for a placeholder.</p>
+<p>See table <a href="#one">1</a> for a placeholder.</p>
 ```
