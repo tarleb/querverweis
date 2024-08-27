@@ -24,7 +24,8 @@ local function id_from_block (blk)
           break
         end
       end
-      return id, blk
+      -- Drop the block if it's now empty
+      return id, (next(blk.content) and blk or nil)
     else
       blk.content:insert(last_inline)
       return nil, blk
