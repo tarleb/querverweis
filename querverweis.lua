@@ -130,11 +130,13 @@ local function get_refnums (reftargets)
   -- Reftype is a JATS reftype
   local function setrefnums (reftype)
     return function (id, i)
-      local refnum = {
-        ['content'] = pandoc.Inlines{tostring(i)},
-        ['ref-type'] = reftype,
-      }
-      rawset(refnums, '#'..id, refnum)
+      if type(id) == 'string' then
+        local refnum = {
+          ['content'] = pandoc.Inlines{tostring(i)},
+          ['ref-type'] = reftype,
+        }
+        rawset(refnums, '#'..id, refnum)
+      end
     end
   end
   -- See the JATS docs for suitable `reftype` values
