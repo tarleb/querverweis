@@ -11,7 +11,9 @@ local equation_class = 'equation'
 local function id_from_block (blk)
   if blk.t == 'Plain' or blk.t == 'Para' then
     local last_inline = blk.content:remove()
-    if last_inline.t == 'Span' and last_inline.identifier ~= '' then
+    if last_inline and
+       last_inline.t == 'Span' and
+       last_inline.identifier ~= '' then
       local id = last_inline.identifier
       blk.content:extend(last_inline.content)  -- unwrap the span
       -- drop trailing whitespace
