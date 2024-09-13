@@ -1,8 +1,16 @@
+--- querverweis – create and improve cross-references
+--
+-- Copyright: © 2024 Albert Krewinkel <albert+pandoc@tarleb.com>
+-- License: MIT
+
 local pandoc = require 'pandoc'
 local List   = require 'pandoc.List'
 local utils  = require 'pandoc.utils'
 
 local ptype, stringify = utils.type, utils.stringify
+
+--- The target format of the conversion. This constant should be set by
+--- pandoc.
 local FORMAT = FORMAT
 
 local equation_class = 'equation'
