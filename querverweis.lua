@@ -91,7 +91,7 @@ local function fill_reftargets (reftargets, opts)
       local formula, label = mth.text:match '^(.+)\\label%{(.+)%}%s*$'
       if formula and label then
         reftargets.equations:insert(label)
-        mth.text = formula:gsub('%s*', '') -- trim end
+        mth.text = formula:gsub('%s*$', '') -- trim end
         return pandoc.Span(mth, {label, {equation_class}}), false
       end
     end,
