@@ -30,7 +30,7 @@ $a, b, c ∈ ℕ$
 [$$ a^2 + b^2 = c^2 $$]{#squares .equation}
 
 This formula can be generalized to
-[$$a^n+b^n=c^n$$]{#fermat .equation}
+[$$ a^n + b^n = c^n$$]{#fermat .equation}
 
 It has been proven that equation [2](#fermat) has no solutions in the
 positive integers if $n ≥ 3$.
