@@ -1,0 +1,12 @@
+when:
+  - event: push
+
+steps:
+  - name: Test
+    image: pandoc/minimal:latest-alpine
+    commands:
+      # Install dependencies
+      - apk add luarocks5.4 make
+      - eval $(luarocks-5.4 path)
+      - luarocks-5.4 install perevir
+      - make test
