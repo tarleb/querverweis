@@ -7,6 +7,12 @@ The filter can fill in missing link labels to cross-linked elements,
 parse and handle `\label` commands in LaTeX math elements, and add
 caption labels to figures and tables.
 
+> [!WARNING]
+> Development of this package happens in the [Codeberg repository]; this
+> is a mirror that may be updated infrequently. It's still possible to
+> raise issues here, but using Codeberg is preferred.
+
+[Codeberg repository]: https://codeberg.org/tarleb/querverweis
 
 <!-- DO NOT EDIT AFTER THIS LINE! THE FOLLOWING CONTENT IS GENERATED -->
 
