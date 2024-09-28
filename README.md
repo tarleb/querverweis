@@ -129,13 +129,61 @@ $a, b, c ∈ ℕ$
 [$$ a^2 + b^2 = c^2 $$]{#squares .equation}
 
 This formula can be generalized to
-[$$a^n+b^n=c^n$$]{#fermat .equation}
+[$$ a^n + b^n = c^n$$]{#fermat .equation}
 
 It has been proven that equation [2](#fermat) has no solutions in the
 positive integers if $n ≥ 3$.
 ```
 
 </details>
+
+### Sections
+
+Unlabeled section links are labeled with the number of the referenced
+section.
+
+``` markdown
+# Introduction
+
+Explaining the basics.
+
+# Methods
+
+How things were done.
+
+# Results
+
+What we found using the approach described in [](#methods).
+
+The output of the computational model is given in section
+[](#simulation).
+
+## Lab
+## Simulation
+```
+
+After passing through the filter this input becomes equivalent to
+
+``` markdown
+# Introduction
+
+Explaining the basics.
+
+# Methods
+
+How things were done.
+
+# Results
+
+What we found using the approach described in [2](#methods).
+
+The output of the computational model is given in section
+[3.2](#simulation).
+
+## Lab
+
+## Simulation
+```
 
 Configuration
 -------------
