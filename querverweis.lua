@@ -60,14 +60,46 @@ local function set_id_from_caption (elem)
   return nil, elem
 end
 
+--- Map internal querverweis reference type to JATS 'ref-type'.
 local reftypes = {
   ['equation'] = 'disp-formula',
   ['figure']   = 'figure',
+  ['section']  = 'sec',
   ['table']    = 'table',
 }
 
+--- Class used to count sections, or elements in sections.
+local SectionCounter = {}
+function SectionCounter:new ()
+  return setmetatable({ counters = {} }, self)
+end
+function SectionCounter:increase (level)
+  local counters = self.counters
+  for i = 1, level do
+    counters[i] = counters[i] or 0
+  end
+  counters[level] = counters[level] + 1
+  for i = level + 1, #counters do
+    counters[i] = 0
+  end
+  return self
+end
+function SectionCounter:__tostring ()
+  return table.concat(self.counters, '.')
+end
+SectionCounter.__index = SectionCounter
+SectionCounter.__call  = SectionCounter.new
+setmetatable(SectionCounter, SectionCounter)
+
+
+--
+-- ReferenceMap
+--
+
 --- Map from identifiers to elements.
 local ReferenceMap = {}
+
+--- Create a new reference map.
 function ReferenceMap:new ()
   local refmap = {
     references = {},
@@ -77,7 +109,12 @@ function ReferenceMap:new ()
 end
 
 function ReferenceMap:count(reftype, level)
-  self.counters[reftype] = (self.counters[reftype] or 0) + 1
+  if level then
+    self.counters[reftype] =
+      (self.counters[reftype] or SectionCounter()):increase(level)
+  else
+    self.counters[reftype] = (self.counters[reftype] or 0) + 1
+  end
 end
 
 --- Add a new element to the reference map
@@ -114,6 +151,10 @@ function ReferenceMap:fill(doc)
     traverse = 'topdown',
     Figure = function (fig)
       return add_captioned_to_reftargets('figure', fig)
+    end,
+    Header = function (h)
+      self:count('section', h.level)
+      self:add('section', h.attr.identifier)
     end,
     Span = function (span)
       if span.identifier and span.classes:includes(equation_class) then
