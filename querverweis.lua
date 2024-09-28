@@ -60,46 +60,88 @@ local function set_id_from_caption (elem)
   return nil, elem
 end
 
---- Creates a filter that fills the given `reftargets` data structure.
-local function fill_reftargets (reftargets, opts)
-  local function add_to_reftargets(elem, key)
+local reftypes = {
+  ['equation'] = 'disp-formula',
+  ['figure']   = 'figure',
+  ['table']    = 'table',
+}
+
+--- Map from identifiers to elements.
+local ReferenceMap = {}
+function ReferenceMap:new ()
+  local refmap = {
+    references = {},
+    counters = {},
+  }
+  return setmetatable(refmap, self)
+end
+
+function ReferenceMap:count(reftype, level)
+  self.counters[reftype] = (self.counters[reftype] or 0) + 1
+end
+
+--- Add a new element to the reference map
+function ReferenceMap:add(reftype, id, linktext)
+  -- Create a reference object if the ID is a non-empty string
+  if type(id) == 'string' and id ~= '' then
+    linktext = linktext or pandoc.Inlines{tostring(self.counters[reftype])}
+
+    self.references['#' .. id] = {
+      ['content'] = linktext,
+      ['ref-type'] = reftypes[reftype]
+    }
+  end
+end
+
+--- Fill the reference map for the given document
+function ReferenceMap:fill(doc)
+  local function add_captioned_to_reftargets(key, elem)
+    self:count(key)
+    local id = elem.attr.identifier
     -- If the element has no ID, try to get one from the caption.
-    if elem.identifier == '' then
-      local id
+    if id == '' then
       id, elem = set_id_from_caption(elem)
       -- use `true` instead of an ID as a placeholder, so numbering
       -- will still work.
-      reftargets[key]:insert(id or true)
+      self:add(key, id or true)
       return elem
     else
-      reftargets[key]:insert(elem.identifier)
+      self:add(key, id)
     end
   end
 
-  return  {
+  doc = doc:walk {
     traverse = 'topdown',
     Figure = function (fig)
-      return add_to_reftargets(fig, 'figures')
+      return add_captioned_to_reftargets('figure', fig)
     end,
     Span = function (span)
       if span.identifier and span.classes:includes(equation_class) then
-        reftargets.equations:insert(span.identifier)
+        self:count('equation')
+        self:add('equation', span.identifier)
         return span, false
       end
     end,
     Math = function (mth)
       local formula, label = mth.text:match '^(.+)\\label%{(.+)%}%s*$'
       if formula and label then
-        reftargets.equations:insert(label)
+        self:count('equation')
+        self:add('equation', label)
         mth.text = formula:gsub('%s*$', '') -- trim end
         return pandoc.Span(mth, {label, {equation_class}}), false
       end
     end,
     Table = function (tbl)
-      return add_to_reftargets(tbl, 'tables')
+      return add_captioned_to_reftargets('table', tbl)
     end,
   }
+
+  return doc
 end
+
+ReferenceMap.__index = ReferenceMap
+ReferenceMap.__call = ReferenceMap.new
+setmetatable(ReferenceMap, ReferenceMap)
 
 --- A pandoc Space element. Created once for optimization.
 local Space = pandoc.Space()
@@ -132,28 +174,6 @@ local function add_label (refnums, opts)
     end
     return element
   end
-end
-
---- Returns a map from id to reference number
-local function get_refnums (reftargets)
-  local refnums = {}
-  -- Reftype is a JATS reftype
-  local function setrefnums (reftype)
-    return function (id, i)
-      if type(id) == 'string' then
-        local refnum = {
-          ['content'] = pandoc.Inlines{tostring(i)},
-          ['ref-type'] = reftype,
-        }
-        rawset(refnums, '#'..id, refnum)
-      end
-    end
-  end
-  -- See the JATS docs for suitable `reftype` values
-  reftargets.equations:map(setrefnums('disp-formula'))
-  reftargets.figures:map(setrefnums('figure'))
-  reftargets.tables:map(setrefnums('table'))
-  return refnums
 end
 
 local function set_labels (refnums, opts)
@@ -224,15 +244,9 @@ return {{
     Pandoc = function (doc)
       local opts = make_opts(doc.meta.querverweis)
       doc.meta.querverweis = nil
+      local refmap = ReferenceMap(opts)
 
-      local reftargets = {
-        equations = List{},
-        figures = List{},
-        tables  = List{},
-      }
-      doc = doc:walk(fill_reftargets(reftargets))
-
-      local refnums = get_refnums(reftargets)
-      return doc:walk(set_labels(refnums, opts))
+      doc = refmap:fill(doc)
+      return doc:walk(set_labels(refmap.references, opts))
     end
 }}
