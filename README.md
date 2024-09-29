@@ -137,13 +137,15 @@ Unlabeled section links are labeled with the number of the referenced
 section.
 
 ``` markdown
-# Introduction
+# Prelude {-}
 
-Explaining the basics.
+Some introductory text.
 
 # Methods
 
 How things were done.
+
+This is mentioned in [](#prelude).
 
 # Results
 
@@ -159,20 +161,22 @@ The output of the computational model is given in section
 After passing through the filter this input becomes equivalent to
 
 ``` markdown
-# Introduction
+# Prelude {.unnumbered}
 
-Explaining the basics.
+Some introductory text.
 
 # Methods
 
 How things were done.
 
+This is mentioned in [Prelude](#prelude).
+
 # Results
 
-What we found using the approach described in [2](#methods).
+What we found using the approach described in [1](#methods).
 
 The output of the computational model is given in section
-[3.2](#simulation).
+[2.2](#simulation).
 
 ## Lab
 

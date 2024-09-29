@@ -80,7 +80,7 @@ function SectionCounter:increase (level)
   end
   counters[level] = counters[level] + 1
   for i = level + 1, #counters do
-    counters[i] = 0
+    counters[i] = nil
   end
   return self
 end
@@ -153,8 +153,12 @@ function ReferenceMap:fill(doc)
       return add_captioned_to_reftargets('figure', fig)
     end,
     Header = function (h)
-      self:count('section', h.level)
-      self:add('section', h.attr.identifier)
+      if h.attr.classes:includes 'unnumbered' then
+        self:add('section', h.attr.identifier, stringify(h.content))
+      else
+        self:count('section', h.level)
+        self:add('section', h.attr.identifier)
+      end
     end,
     Span = function (span)
       if span.identifier and span.classes:includes(equation_class) then
