@@ -141,21 +141,23 @@ section.
 
 Some introductory text.
 
+# Introduction
+
+The results are described in section [](#results).
+
+The the computational model is described in section
+[](#simulation).
+
+This is mentioned in [](#prelude).
+
 # Methods
 
 How things were done.
 
-This is mentioned in [](#prelude).
-
-# Results
-
-What we found using the approach described in [](#methods).
-
-The output of the computational model is given in section
-[](#simulation).
-
 ## Lab
 ## Simulation
+
+# Results
 ```
 
 After passing through the filter this input becomes equivalent to
@@ -165,22 +167,24 @@ After passing through the filter this input becomes equivalent to
 
 Some introductory text.
 
+# Introduction
+
+The results are described in section [3](#results).
+
+The the computational model is described in section
+[2.2](#simulation).
+
+This is mentioned in [Prelude](#prelude).
+
 # Methods
 
 How things were done.
 
-This is mentioned in [Prelude](#prelude).
-
-# Results
-
-What we found using the approach described in [1](#methods).
-
-The output of the computational model is given in section
-[2.2](#simulation).
-
 ## Lab
 
 ## Simulation
+
+# Results
 ```
 
 Configuration
