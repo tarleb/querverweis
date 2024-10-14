@@ -7,6 +7,7 @@ input-files:
   - test/perevirky/basics-table-id.md
   - test/perevirky/basics-equation.md
   - test/perevirky/basics-section.md
+  - test/perevirky/basics-citation-syntax.md
   - test/perevirky/config-intro.md
   - test/perevirky/config-labels.md
   - test/perevirky/config-labels-format-list.md

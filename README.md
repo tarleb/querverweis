@@ -7,6 +7,8 @@ The filter can fill in missing link labels to cross-linked elements,
 parse and handle `\label` commands in LaTeX math elements, and add
 caption labels to figures and tables.
 
+A citations-based syntax for cross-referencing is supported, too.
+
 > [!WARNING]
 > Development of this package happens in the [Codeberg repository]; this
 > is a mirror that may be updated infrequently. It's still possible to
@@ -147,21 +149,23 @@ section.
 
 Some introductory text.
 
+# Introduction
+
+The results are described in section [](#results).
+
+The the computational model is described in section
+[](#simulation).
+
+This is mentioned in [](#prelude).
+
 # Methods
 
 How things were done.
 
-This is mentioned in [](#prelude).
-
-# Results
-
-What we found using the approach described in [](#methods).
-
-The output of the computational model is given in section
-[](#simulation).
-
 ## Lab
 ## Simulation
+
+# Results
 ```
 
 After passing through the filter this input becomes equivalent to
@@ -171,22 +175,42 @@ After passing through the filter this input becomes equivalent to
 
 Some introductory text.
 
+# Introduction
+
+The results are described in section [3](#results).
+
+The the computational model is described in section
+[2.2](#simulation).
+
+This is mentioned in [Prelude](#prelude).
+
 # Methods
 
 How things were done.
 
-This is mentioned in [Prelude](#prelude).
-
-# Results
-
-What we found using the approach described in [1](#methods).
-
-The output of the computational model is given in section
-[2.2](#simulation).
-
 ## Lab
 
 ## Simulation
+
+# Results
+```
+
+### Citation syntax
+
+Citations can be used as an alternative to unlabeled links. This is
+particularly convenient when authoring in Markdown with the `citations`
+extension enabled (the default for pandoc Markdown).
+
+``` markdown
+![The face of a male mandrill](mandrill.jpg){#fig:mandrill}
+
+The *Mandrill* face in @fig:mandrill is a classic test image.
+```
+
+``` markdown
+![The face of a male mandrill](mandrill.jpg){#fig:mandrill}
+
+The *Mandrill* face in [1](#fig:mandrill) is a classic test image.
 ```
 
 Configuration

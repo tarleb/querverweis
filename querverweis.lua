@@ -221,6 +221,7 @@ local function add_label (refnums, opts)
   end
 end
 
+--- Set labels on links, references, figures, and tables.
 local function set_labels (refnums, opts)
   return {
     Table = opts.labels and add_label(refnums, opts) or nil,
@@ -237,6 +238,21 @@ local function set_labels (refnums, opts)
           return link
         end
       end
+    end,
+
+    Cite = function (cite)
+      local refs = pandoc.Inlines{}
+      for _, citation in ipairs(cite.citations) do
+        local target = '#' .. citation.id
+        local refobj = refnums[target]
+        if refobj then
+          local attributes = {
+            ['ref-type'] = opts['ref-types'] and refobj['ref-type'] or nil
+          }
+          refs:insert(pandoc.Link(refobj.content, target, '', attributes))
+        end
+      end
+      return next(refs) and refs or cite
     end
   }
 end
