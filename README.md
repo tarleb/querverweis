@@ -7,6 +7,7 @@ The filter can fill in missing link labels to cross-linked elements,
 parse and handle `\label` commands in LaTeX math elements, and add
 caption labels to figures and tables.
 
+A citations-based syntax for cross-referencing is supported, too.
 
 <!-- DO NOT EDIT AFTER THIS LINE! THE FOLLOWING CONTENT IS GENERATED -->
 
@@ -185,6 +186,24 @@ How things were done.
 ## Simulation
 
 # Results
+```
+
+### Citation syntax
+
+Citations can be used as an alternative to unlabeled links. This is
+particularly convenient when authoring in Markdown with the `citations`
+extension enabled (the default for pandoc Markdown).
+
+``` markdown
+![The face of a male mandrill](mandrill.jpg){#fig:mandrill}
+
+The *Mandrill* face in @fig:mandrill is a classic test image.
+```
+
+``` markdown
+![The face of a male mandrill](mandrill.jpg){#fig:mandrill}
+
+The *Mandrill* face in [1](#fig:mandrill) is a classic test image.
 ```
 
 Configuration
