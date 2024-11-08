@@ -1,15 +1,38 @@
 querverweis
 ===========
 
-A cross-reference library, implemented in pandoc Lua.
-
-The filter can fill in missing link labels to cross-linked elements,
-parse and handle `\label` commands in LaTeX math elements, and add
-caption labels to figures and tables.
-
-A citations-based syntax for cross-referencing is supported, too.
+Querverweis is a cross-referencing Lua filter for Pandoc. It adds
+numbered cross-references in the text using standard inline links to
+`#id` properties for figures and section titles and supports injecting
+`#id`s in cases where Pandoc does not natively support it (tables and
+equations). For figures and tables it can optionally generate labels in
+the output captions for formats like HTML. Markdown users can also use
+citation syntax instead of links to generate cross-references.
 
 <!-- DO NOT EDIT AFTER THIS LINE! THE FOLLOWING CONTENT IS GENERATED -->
+
+Consider a simple figure with link (`labels` option is enabled, see
+[below for details](#labels-add-labels-to-caption)):
+
+``` markdown
+---
+querverweis:
+  labels: true
+---
+![A beautiful sunset.](sunset.jpg){#sunset}
+
+See Figure [](#sunset) for a sunset.
+```
+
+…would generate this HTML output:
+
+``` html
+<figure id="sunset">
+<img src="sunset.jpg" alt="A beautiful sunset." />
+<figcaption><span class="caption-label">Figure 1 </span>A beautiful sunset.</figcaption>
+</figure>
+<p>See Figure <a href="#sunset">1</a> for a sunset.</p>
+```
 
 Functionality
 -------------
