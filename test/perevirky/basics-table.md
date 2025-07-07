@@ -1,7 +1,7 @@
 ## Tables
 
-Just like for figures, empty links to tables filled with the table
-number's numbered.
+Just like with figures, empty links to tables are filled with the
+table number.
 
 ``` html {#input}
 <table id="one">
@@ -11,8 +11,7 @@ number's numbered.
 <p>See table <a href="#one"></a> for a placeholder.</p>
 ```
 
-The empty link label gets filled with the table number. It's as if the
-above was written as
+The empty link label gets filled with the table number:
 
 ``` html {#output}
 <table id="one">
