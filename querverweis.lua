@@ -11,7 +11,7 @@ local ptype, stringify = utils.type, utils.stringify
 
 --- The target format of the conversion. This constant should be set by
 --- pandoc.
-local FORMAT = FORMAT
+local FORMAT = FORMAT or 'markdown'
 
 local equation_class = 'equation'
 
@@ -168,11 +168,12 @@ function ReferenceMap:fill(doc)
       end
     end,
     Math = function (mth)
-      local formula, label = mth.text:match '^(.+)\\label%{(.+)%}%s*$'
-      if formula and label then
+      local before, label, after = mth.text:match '^(.+)\\label%{([^%}]+)%}(.*)$'
+      if before and label then
+        local formula = before .. (after or '')
         self:count('equation')
         self:add('equation', label)
-        mth.text = formula:gsub('%s*$', '') -- trim end
+        mth.text = formula:gsub('%s*$', ''):gsub('%s\n', '\n') -- trim lines
         return pandoc.Span(mth, {label, {equation_class}}), false
       end
     end,
